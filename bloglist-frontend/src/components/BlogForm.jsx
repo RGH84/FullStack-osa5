@@ -1,41 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const BlogForm = ({
-  addBlog,
-  newTitle,
-  newAuthor,
-  newUrl,
-  setNewTitle,
-  setNewAuthor,
-  setNewUrl
-}) => (
-  <form onSubmit={addBlog}>
+const BlogForm = ({ createBlog }) => {
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: ''
+  })
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    createBlog(newBlog)
+    setNewBlog({ title: '', author: '', url: '' })
+  }
+
+  return (
     <div>
-      title:
-      <input
-        type="text"
-        value={newTitle}
-        onChange={({ target }) => setNewTitle(target.value)}
-      />
+      <h2>Create a new blog</h2>
+
+      <form onSubmit={addBlog}>
+        <div>
+          <label htmlFor="title">title:</label>
+          <input
+            id="title"
+            type="text"
+            value={newBlog.title}
+            onChange={event => setNewBlog({ ...newBlog, title: event.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="author">author:</label>
+          <input
+            id="author"
+            type="text"
+            value={newBlog.author}
+            onChange={event => setNewBlog({ ...newBlog, author: event.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="url">url:</label>
+          <input
+            id="url"
+            type="text"
+            value={newBlog.url}
+            onChange={event => setNewBlog({ ...newBlog, url: event.target.value })}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
     </div>
-    <div>
-      author:
-      <input
-        type="text"
-        value={newAuthor}
-        onChange={({ target }) => setNewAuthor(target.value)}
-      />
-    </div>
-    <div>
-      url:
-      <input
-        type="text"
-        value={newUrl}
-        onChange={({ target }) => setNewUrl(target.value)}
-      />
-    </div>
-    <button type="submit">create</button>
-  </form>
-)
+  )
+}
+
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired
+}
 
 export default BlogForm
